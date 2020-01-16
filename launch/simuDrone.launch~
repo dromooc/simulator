@@ -1,0 +1,23 @@
+<launch>
+
+    <arg name="drone_number" default="1" />
+
+
+    <group ns="quadrotor$(arg drone_number)">   
+
+        <node name="quadrotorSimu" pkg="simulator" type="quadrotorSimu.py" output="screen">
+              <!-- <param name="drone_id" value="$(arg drone_number)" /> -->
+        </node>
+
+        <node name="positionCtrl" pkg="simulator" type="positionCtrl.py" output="screen">
+        </node>
+
+        <node name="attitudeCtrl" pkg="simulator" type="attitudeCtrl.py" output="screen">
+        </node>
+
+
+    </group>
+
+</launch>
+
+

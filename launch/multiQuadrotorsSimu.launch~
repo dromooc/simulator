@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+
+<!-- DroMOOC
+     ONERA-ENSTA-CentraleSupelec-Paris Saclay
+     Mono drone simulator
+-->
+
+<launch>
+
+	<arg name="uav1_name" default="uav1"/>
+	<arg name="uav2_name" default="uav2"/>
+
+
+	<group ns="$(arg uav1_name)">
+
+		<!-- Quadrotor simulator and controllers -->
+		<node name="quadrotorSimu" pkg="simulator" type="quadrotorSimu.py" output="screen"> </node>
+		<node name="positionCtrl" pkg="simulator" type="positionCtrl.py" output="screen"> </node>
+		<node name="attitudeCtrl" pkg="simulator" type="attitudeCtrl.py" output="screen"> </node>
+
+		<!-- 3D model for RViz -->
+		<param name="$(arg uav1_name)/robot_description" command="$(find xacro)/xacro $(find simulator)/urdf/quadrotor.urdf.xacro" />
+			<!-- <param name="use_gui" value="True"/> -->
+		<node name="$(arg uav1_name)/quadrotor_joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" ></node>
+		<node name="$(arg uav1_name)/quadrotor_robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+	</group>
+
+
+
+	<group ns="$(arg uav2_name)">
+
+		<!-- Quadrotor simulator and controllers -->
+		<node name="quadrotorSimu" pkg="simulator" type="quadrotorSimu.py" output="screen"> </node>
+		<node name="positionCtrl" pkg="simulator" type="positionCtrl.py" output="screen"> </node>
+		<node name="attitudeCtrl" pkg="simulator" type="attitudeCtrl.py" output="screen"> </node>
+
+		<!-- 3D model for RViz -->
+		<param name="$(arg uav2_name)/robot_description" command="$(find xacro)/xacro $(find simulator)/urdf/quadrotor.urdf.xacro" />
+			<!-- <param name="use_gui" value="True"/> -->
+		<node name="$(arg uav2_name)/quadrotor_joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" ></node>
+		<node name="$(arg uav2_name)/quadrotor_robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+	</group>
+
+
+
+
+	<!-- RViz GUI -->
+    	<node name="visu" pkg="rviz" type="rviz" output="screen" args="-d $(find simulator)/viz/quadrotorSimu.rviz" />
+
+	<!-- RQT GUI -->
+    	<node name="rqt" pkg="rqt_gui" type="rqt_gui" output="screen" args="--perspective-file $(find simulator)/viz/quadrotorSimu.perspective" />
+
+
+</launch>
+
+

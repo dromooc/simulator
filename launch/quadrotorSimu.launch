@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<!-- DroMOOC
+     ONERA-ENSTA-CentraleSupelec-Paris Saclay
+     Mono drone simulator
+-->
+
+<launch>
+
+	<!-- Quadrotor simulator and controllers -->
+        <node name="simulator" pkg="simulator" type="quadrotorSimu.py" output="screen"> </node>
+	<node name="positionCtrl" pkg="simulator" type="positionCtrl.py" output="screen"> </node>
+        <node name="attitudeCtrl" pkg="simulator" type="attitudeCtrl.py" output="screen"> </node>
+
+
+	<!-- 3D model for RViz -->
+	<param name="robot_description" command="$(find xacro)/xacro $(find simulator)/urdf/quadrotor.urdf.xacro" />
+		<!-- <param name="use_gui" value="True"/> -->
+	<node name="quadrotor_joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" ></node>
+	<node name="quadrotor_robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+	<!-- RViz GUI -->
+    	<node name="rviz" pkg="rviz" type="rviz" output="screen" args="-d $(find simulator)/viz/quadrotorSimu.rviz" /> 
+
+	<!-- RQT GUI -->
+    	<node name="graphical_interface" pkg="rqt_gui" type="rqt_gui" output="screen" args="--perspective-file $(find simulator)/viz/quadrotorSimu.perspective" />
+
+
+</launch>
+
+
